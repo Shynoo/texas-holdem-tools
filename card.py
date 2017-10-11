@@ -57,8 +57,8 @@ class SevenCard():
 
     def fromString(s1,s2=''):
         s1=(s1+s2).strip()
-
         arr=Card.arrayFromString(s1)
+        assert len(arr)>=5
         res=SevenCard()
         res.arr=sorted(arr,key=lambda x:x.num)
         
@@ -187,6 +187,7 @@ class SevenCard():
         return self.value
 
      # 
+    
     def tryResolvePair(self,cards,numNum):
         p1,p2,t=0,0,0
         ticker=[]
@@ -260,18 +261,6 @@ class SevenCard():
         if self.tryResolveHigh(cards):
             self.maxValue=self.value
             return self.value
-
-
-    def multiThreadCaculateMaxValue(self):
-        ls=self.allPosibleGroupOf7Cards()
-        t1 = threading.Thread(target=self.caculateMaxValueWithList,args=(ls[0:20],))
-        t2 = threading.Thread(target=self.caculateMaxValueWithList,args=(ls[20:],))
-
-        t1.start()
-        t2.start()
-        t1.join()
-        t2.join()
-        return self.maxValue
 
 
 def test7Card():
