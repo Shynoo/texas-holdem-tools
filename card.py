@@ -47,10 +47,11 @@ class SevenCard():
         self.value=0
         self.levelText=self.levelTable[1]
 
-    def getCardLevel(self):
+    def getCardLevelText(self):
         assert self.value>0
         self.cardLevel=int(str(self.value)[0])
-        return self.levelTable[self.cardLevel]
+        self.levelText=self.levelTable[self.cardLevel]
+        return self.levelText
 
     def __str__(self):
         res=''
@@ -223,11 +224,6 @@ class SevenCard():
         val=int(s)
         return val
 
-    def caculateAll(self):
-        self.value=self.resolveMaxValue()
-        self.maxValue=self.value
-        self.levelText=self.getCardLevel()
-
     resolveMethodList=[tryResolveStraightFlushAndFlush,tryResolveFour,tryResolveFullHouse,tryResolveStraight,tryResolveSet,tryResolvePair,tryResolveHigh]
 
     def resolveMaxValue(self):
@@ -238,9 +234,11 @@ class SevenCard():
         for resolve in self.resolveMethodList:
             t=resolve(self,cards,numNum,tagNum)
             if t:
-                self.value=self.caculateValueFromIterator(t)
-                return self.value
+                return self.caculateValueFromIterator(t)
 
+    def caculateAll(self):
+        self.value=self.resolveMaxValue()
+        self.levelText=self.getCardLevelText()
 
 def testAllLevelCards():
     from deck import Deck
@@ -248,6 +246,7 @@ def testAllLevelCards():
     levelSet=set([i for i  in range(1,10)])
     while len(levelSet)>0:
         deck=Deck()
+        deck.shuffle()
         cards=[]
         for i in range(0,7):
             cards.append(deck.dealOne())
