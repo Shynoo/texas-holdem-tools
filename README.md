@@ -1,4 +1,4 @@
-# texas-holdem-poker
+# texas-holdem-tools
 A series Tools for texas hold'em with python. 
 
 ## Include
