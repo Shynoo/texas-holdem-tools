@@ -34,9 +34,9 @@ def caculcateWinRateByTotalPossible(deck,players,totalNum=2500):
         pv=[0 for i in players]
         for index,player in enumerate(players):
             temp=SevenCard.fromCardArray(cards,player.hands)
-            temp.resolveMaxValue()
-            if temp.maxValue>pv[index]:
-                pv[index] = temp.maxValue
+            temp.caculateAll()
+            if temp.value>pv[index]:
+                pv[index] = temp.value
 
         m=max(pv)
         for index,val in enumerate(pv):
@@ -71,11 +71,12 @@ def caculateWinRate(deck,players,groupNum=2500):
     for index,num in enumerate(winNum):
         print('%s %.1f'%(str(players[index].hands[0])+str(players[index].hands[1]),num/totalPv*100)+'%',end='  ')
 
-def testWinRate(hands,showCards=''):
+def testWinRate(handsList,showCards=''):
+    assert len(handsList)>=2
     deck=Deck()
     ls=[]
     players=[]
-    for s in hands:
+    for s in handsList:
         p1=Player()
         p1.hands=Card.arrayFromString(s)
         players.append(p1)
