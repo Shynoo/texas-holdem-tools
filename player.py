@@ -12,3 +12,9 @@ class Player():
         self.winRate=0
         self.currentMoney=Decimal()
 
+    def bet(self,gameRoom,cashNum):
+        betNum=Decimal(cashNum)
+        if self.currentMoney<betNum:
+            return False
+        gameRoom.playerBet(betNum)
+
