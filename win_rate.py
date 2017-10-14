@@ -7,7 +7,7 @@ from player import Player
 import random
 import cProfile
 
-def generateProbabilityGroup(cardList):
+def _generateProbabilityGroupResult(cardList):
     totalResult=[]
     length=len(cardList)
     for n1 in range(0,length):
@@ -16,7 +16,16 @@ def generateProbabilityGroup(cardList):
             totalResult.append(tempList)
     return totalResult
 
-def caculcateWinRateByTotalPossible(deck,players,totalNum=2500):
+def _generateRandomGroupResult(cardList,totalNum,dealNum):
+    res=[]
+    if dealNum==0:
+        return
+    for i in range(0,totalNum):
+        ls=random.sample(cardList,dealNum)
+        res.append(ls)
+    return res
+
+def caculcateWinRateBy(deck,players,totalNum=2500):
     showList=deck.showList.copy()
     cardList=deck.inDeck.copy()
     winNum=[0 for i in players]
@@ -24,10 +33,10 @@ def caculcateWinRateByTotalPossible(deck,players,totalNum=2500):
     totalResult=[]
 
     if len(showList)>=3:
-        totalResult=generateProbabilityGroup(cardList)
+        totalResult=_generateProbabilityGroupResult(cardList)
     else:
         dealNum=5-len(showList)
-        totalResult=randomMakeResult(cardList,totalNum,dealNum)
+        totalResult=_generateRandomGroupResult(cardList,totalNum,dealNum)
 
     for cards in totalResult:
         cards.extend(showList)
@@ -53,24 +62,6 @@ def caculcateWinRateByTotalPossible(deck,players,totalNum=2500):
     return res
 
 
-def randomMakeResult(cardList,totalNum,dealNum):
-    res=[]
-    if dealNum==0:
-        return
-    for i in range(0,totalNum):
-        ls=random.sample(cardList,dealNum)
-        res.append(ls)
-    return res
-
-def caculateWinRate(deck,players,groupNum=2500):
-    showList=deck.showList
-    if len(showList)>=3:
-        return caculcateWinRateByTotalPossible(deck,players)
-    else:
-        return caculateWinRateByRandomGroup(deck,players,groupNum)
-    for index,num in enumerate(winNum):
-        print('%s %.1f'%(str(players[index].hands[0])+str(players[index].hands[1]),num/totalPv*100)+'%',end='  ')
-
 def testWinRate(handsList,showCards=''):
     assert len(handsList)>=2
     deck=Deck()
@@ -84,7 +75,7 @@ def testWinRate(handsList,showCards=''):
     sl=Card.arrayFromString(showCards)
     deck.showList.extend(sl)
     deck.removeCards(sl)
-    winRateList=caculcateWinRateByTotalPossible(deck,players)
+    winRateList=caculcateWinRateBy(deck,players)
     for player in players:
         print('%s %.1f'%(str(player.hands[0])+str(player.hands[1]),player.winRate*100)+'%',end='  ')
 
