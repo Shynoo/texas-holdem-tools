@@ -77,7 +77,7 @@ class SevenCard():
         res.arr.sort(key=lambda card:card.num)
         return res
 
-    def generateNumNum(self,cards):
+    def _generateNumNum(self,cards):
         nums={x:0 for x in range(1,15)}
         for card in cards:
             nums[card.num]+=1
@@ -85,14 +85,14 @@ class SevenCard():
                 nums[1]+=1
         return nums
 
-    def generateTagNum(self,cards):
+    def _generateTagNum(self,cards):
         tags={'h':0,'d':0,'c':0,'s':0}
         for card in cards:
             tags[card.tag]+=1
         return tags
 
     # 同花顺-9 同花-6
-    def tryResolveStraightFlushAndFlush(self,cards,numNum,tagNum):
+    def _tryResolveStraightFlushAndFlush(self,cards,numNum,tagNum):
         tag=None
         for t in tagNum:
             if tagNum[t]>=5:
@@ -105,14 +105,14 @@ class SevenCard():
             if card.tag!=tag:
                 ls.remove(card)
 
-        r=self.testStraight(ls,self.generateNumNum(ls),[])
+        r=self._testStraight(ls,self._generateNumNum(ls),[])
         if r:
             lev,mValue=r
             return (9,mValue)
         return(6,ls[-1].num,ls[-2].num,ls[-3].num,ls[-4].num,ls[-5].num)
 
     # 顺子-5
-    def testStraight(self,cards,numNum,tagNum):
+    def _testStraight(self,cards,numNum,tagNum):
         nums={x:0 for x in range(1,15)}
         for card in cards:
             nums[card.num]+=1
@@ -128,10 +128,10 @@ class SevenCard():
                 return (5,i)
         return False
 
-    def tryResolveStraight(self,cards,numNum,tagNum):    
-        return self.testStraight(cards,numNum,tagNum)
+    def _tryResolveStraight(self,cards,numNum,tagNum):    
+        return self._testStraight(cards,numNum,tagNum)
 
-    def tryResolveFour(self,cards,numNum,tagNum):
+    def _tryResolveFour(self,cards,numNum,tagNum):
         f=0
         for num in range(14,1,-1):
             if numNum[num]>=4:
@@ -144,7 +144,7 @@ class SevenCard():
                 return(8,f,num)
 
     # 7
-    def tryResolveFullHouse(self,cards,numNum,tagNum):
+    def _tryResolveFullHouse(self,cards,numNum,tagNum):
         f,h=0,0
         for num in range(14,1,-1):
             if numNum[num]>=3:
@@ -161,7 +161,7 @@ class SevenCard():
         return False
 
     # 4
-    def tryResolveSet(self,cards,numNum,tagNum):
+    def _tryResolveSet(self,cards,numNum,tagNum):
         f,h1,h2=0,0,0
         for num in range(14,1,-1):
             if numNum[num]>=3:
@@ -181,7 +181,7 @@ class SevenCard():
 
      # 
     
-    def tryResolvePair(self,cards,numNum,tagNum):
+    def _tryResolvePair(self,cards,numNum,tagNum):
         p1,p2,t=0,0,0
         ticker=[]
         for num in range(14,1,-1):
@@ -211,11 +211,11 @@ class SevenCard():
             tup=(3,p1,p2,t)
             return tup
 
-    def tryResolveHigh(self,cards,numNum,tagNum):
+    def _tryResolveHigh(self,cards,numNum,tagNum):
         t=(1,cards[-1].num,cards[-2].num,cards[-3].num,cards[-4].num,cards[-5].num)
         return t
 
-    def caculateValueFromIterator(self,iterator):
+    def _caculateValueFromIterator(self,iterator):
         v=[]
         v.extend(iterator)
         toApend=6-len(v)
@@ -224,20 +224,20 @@ class SevenCard():
         val=int(s)
         return val
 
-    resolveMethodList=[tryResolveStraightFlushAndFlush,tryResolveFour,tryResolveFullHouse,tryResolveStraight,tryResolveSet,tryResolvePair,tryResolveHigh]
+    resolveMethodList=[_tryResolveStraightFlushAndFlush,_tryResolveFour,_tryResolveFullHouse,_tryResolveStraight,_tryResolveSet,_tryResolvePair,_tryResolveHigh]
 
-    def resolveMaxValue(self):
+    def _resolveMaxValue(self):
         cards=self.arr
-        numNum=self.generateNumNum(cards)
-        tagNum=self.generateTagNum(cards)
+        numNum=self._generateNumNum(cards)
+        tagNum=self._generateTagNum(cards)
 
         for resolve in self.resolveMethodList:
             t=resolve(self,cards,numNum,tagNum)
             if t:
-                return self.caculateValueFromIterator(t)
+                return self._caculateValueFromIterator(t)
 
     def caculateAll(self):
-        self.value=self.resolveMaxValue()
+        self.value=self._resolveMaxValue()
         self.levelText=self.getCardLevelText()
 
 def testAllLevelCards():
