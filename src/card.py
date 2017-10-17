@@ -3,14 +3,16 @@
 
 import threading
 import cProfile
-
+from bidict import bidict
 class Card():
     
-    table={'2':2,'3':3,'4':4,'5':5,'6':6,'7':7,'8':8,'9':9,'T':10,'J':11,'Q':12,'K':13,'A':14}
+    table2={'2':2,'3':3,'4':4,'5':5,'6':6,'7':7,'8':8,'9':9,'T':10,'J':11,'Q':12,'K':13,'A':14}
+    table=bidict(table2)
 
     def __init__(self,num,tag):
         self.num=num
         self.tag=tag
+        self.symbol=self.table.inv[num]
 
     def __gt__(this,that):
         return this.num>that.num
@@ -19,7 +21,7 @@ class Card():
         return this.num<that.num
 
     def __str__(self):
-        return str(self.num)+self.tag
+        return str(self.symbol)+self.tag
 
     def __eq__(self,that):
         if type(that)!=Card:

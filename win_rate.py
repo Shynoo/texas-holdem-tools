@@ -80,6 +80,8 @@ def testWinRate(handsList,showCards=''):
         print('%s %.1f'%(str(player.hands[0])+str(player.hands[1]),player.winRate*100)+'%',end='  ')
 
 
+
+
 def main():
     # cProfile.run('testWinRate()')
     testWinRate(['AsKh','QdQs'],'QhTsJs')
