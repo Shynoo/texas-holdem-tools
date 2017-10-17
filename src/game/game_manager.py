@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding=utf-8 -*-
-
+import sys
+sys.path.append("..")
 from round_game import RoundGame
 from decimal import Decimal
 from deck import Deck

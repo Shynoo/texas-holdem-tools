@@ -7,6 +7,8 @@ from player import Player
 import random
 import cProfile
 
+import mongo.mongo
+
 def _generateProbabilityGroupResult(cardList):
     totalResult=[]
     length=len(cardList)
@@ -78,7 +80,6 @@ def testWinRate(handsList,showCards=''):
     winRateList=caculcateWinRateBy(deck,players)
     for player in players:
         print('%s %.1f'%(str(player.hands[0])+str(player.hands[1]),player.winRate*100)+'%',end='  ')
-
 
 
 
