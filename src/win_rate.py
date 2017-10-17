@@ -61,7 +61,7 @@ def caculcateWinRateBy(deck,players,totalNum=2500):
     return winNum
 
 
-def testWinRate(handsList,showCards=''):
+def testWinRate(handsList,showCards='',totalNum=2500):
     assert len(handsList)>=2
     deck=Deck()
     ls=[]
@@ -77,7 +77,7 @@ def testWinRate(handsList,showCards=''):
     sl=Card.arrayFromString(showCards)
     deck.showList.extend(sl)
     deck.removeCards(sl)
-    winNum=caculcateWinRateBy(deck,players)
+    winNum=caculcateWinRateBy(deck,players,totalNum)
     for player in players:
         print('%s %.1f'%(str(player.hands[0])+str(player.hands[1]),player.winRate*100)+'%',end='  ')
     return winNum
@@ -86,7 +86,8 @@ def testWinRate(handsList,showCards=''):
 
 def main():
     # cProfile.run('testWinRate()')
-    testWinRate(['6s6h','TdTs'])
+    # testWinRate(['6s6h','QdQs'])
+    testWinRate(['6sJd','AdQs'])
 
 if __name__ == '__main__':
     main()

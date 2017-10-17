@@ -13,4 +13,6 @@ A series Tools for texas hold'em with python.
 
 ## Todo
 
-- [] 如何科学的计算一手牌的翻前强度。
+- [ ] 如何较好的计算一手牌的翻前强度。
+- [ ] 计算对手的range范围
+- [ ] 面对对手的range的胜率
