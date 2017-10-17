@@ -19,20 +19,4 @@ class Player():
     def sortHands(self):
         self.hands.sort(key=lambda card:card.num)
 
-    """
-        以下行为委托 RoundGame类 完成
-    """
 
-    def bet(self,game,cashNum):
-        betNum=Decimal(cashNum)
-        if self.currentMoney<betNum:
-            return False
-        self.currentMoney-=Decimal(str(betNum))
-        game.playerBet(self,betNum)
-
-    def fold(self,game):
-        assert type(game)==RoundGame
-        game.playerFold(self)
-    
-    def check(self,game):
-        game.playerCheck(self)

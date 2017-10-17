@@ -7,7 +7,6 @@ from player import Player
 import random
 import cProfile
 
-import mongo.mongo
 
 def _generateProbabilityGroupResult(cardList):
     totalResult=[]
@@ -57,11 +56,9 @@ def caculcateWinRateBy(deck,players,totalNum=2500):
     totalPv=0
     for index,num in enumerate(winNum):
         totalPv+=num
-    res=[]
     for index,num in enumerate(winNum):
         players[index].winRate=num/totalPv
-        res.append(num/totalPv)
-    return res
+    return winNum
 
 
 def testWinRate(handsList,showCards=''):
@@ -71,21 +68,25 @@ def testWinRate(handsList,showCards=''):
     players=[]
     for s in handsList:
         p1=Player()
-        p1.hands=Card.arrayFromString(s)
+        if type(s)==str:            
+            p1.hands=Card.arrayFromString(s)
+        elif type(s)==list:
+            p1.hands=s
         players.append(p1)
     deck.removeCardsFromPlayers(players)
     sl=Card.arrayFromString(showCards)
     deck.showList.extend(sl)
     deck.removeCards(sl)
-    winRateList=caculcateWinRateBy(deck,players)
+    winNum=caculcateWinRateBy(deck,players)
     for player in players:
         print('%s %.1f'%(str(player.hands[0])+str(player.hands[1]),player.winRate*100)+'%',end='  ')
+    return winNum
 
 
 
 def main():
     # cProfile.run('testWinRate()')
-    testWinRate(['AsKh','QdQs'],'QhTsJs')
+    testWinRate(['6s6h','TdTs'])
 
 if __name__ == '__main__':
     main()

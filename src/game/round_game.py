@@ -43,7 +43,9 @@ class RoundGame():
         
 
     def playerBet(self,player,betNum):
-        self.pot[player]+=Decimal(str(betNum))
+        num=Decimal(str(betNum))
+        player.currentMoney-=num
+        self.pot[player]+=num
 
     def playerRaise(self,player,betNum):
         self.pot[player]+=Decimal(str(betNum))
@@ -74,7 +76,7 @@ class RoundGame():
             
 
     def askPlayerBehaviour(self,player):
-        player.bet(self,Decimal(1))
+        self.playerBet(player,Decimal(1))
         print(str(player)+" "+'checked')
     
     def isThisTurnFinsh(self):

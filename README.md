@@ -11,3 +11,6 @@ A series Tools for texas hold'em with python.
 
 1. Calculate 7 cards derict rather than 5, it helps improve 30~40 times performance.
 
+## Todo
+
+- [] 如何科学的计算一手牌的翻前强度。
