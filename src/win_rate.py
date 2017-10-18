@@ -8,7 +8,7 @@ import random
 import cProfile
 
 
-def _generateProbabilityGroupResult(cardList):
+def _generateProbabilityGroupResult(cardList,dealNum=None):
     totalResult=[]
     length=len(cardList)
     for n1 in range(0,length):
@@ -16,6 +16,7 @@ def _generateProbabilityGroupResult(cardList):
             tempList=([cardList[n1],cardList[n2]])
             totalResult.append(tempList)
     return totalResult
+
 
 def _generateRandomGroupResult(cardList,totalNum,dealNum):
     res=[]
@@ -25,6 +26,14 @@ def _generateRandomGroupResult(cardList,totalNum,dealNum):
         ls=random.sample(cardList,dealNum)
         res.append(ls)
     return res
+
+def generateAllRegularHands(deck=Deck()):
+    l=len(deck.inDeck)
+    result=[]
+    for i in range(0,l-1):
+        for j in range(i+1,l):
+            result.append(str(deck.inDeck[i])+str(deck.inDeck[j]))
+    return result
 
 def caculcateWinRateBy(deck,players,totalNum=2500,toDealNum=None):
     showList=deck.showList.copy()

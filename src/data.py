@@ -5,7 +5,7 @@ from deck import Deck
 from mongo import mongo
 from player import Player
 import random
-from card import Card
+from card import Card,SevenCard
 
 
 def insertDate(db,dataList):

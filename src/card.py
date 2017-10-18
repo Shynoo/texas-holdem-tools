@@ -103,6 +103,11 @@ class SevenCard():
         res.arr.sort(key=lambda card:card.num)
         return res
 
+    def addShowCardAndCaculate(self,card):
+        assert len(self.arr)<=6
+        self.arr.append(card)
+        self.caculateAll()
+
     def _generateNumNum(self,cards):
         nums={x:0 for x in range(1,15)}
         for card in cards:
