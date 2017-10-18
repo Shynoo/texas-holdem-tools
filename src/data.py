@@ -23,6 +23,28 @@ def insertDate(db,dataList):
             ratedb.replace_one({'hands':data['hands']},data,True)
 
 
+def winRateVsAllHands(playerNum=2,toDealNum=None,totalNum=1000):
+    deck=Deck()
+    players=[]
+    for index in range(0,playerNum):
+        p=Player()
+        p.hands.append(deck.dealOne())
+        p.hands.append(deck.dealOne())
+        players.append(p)
+    ls2=players
+    winNum=testWinRate(ls2,totalNum=totalNum,toDealNum=toDealNum)
+    for index,p in enumerate(ls2):
+        print('%s %.1f'%(p.simpleHandsString(),p.winRate*100)+'%',end='  ')
+    print()
+    dataList=[]
+    for index,p in enumerate(players):
+        dataList.append({
+            'hands':ls2[index].simpleHandsString(),
+            'winNum':winNum[index],
+            'totalNum':totalNum,
+        })
+
+    insertDate(mongo.generateDB(toDealNum=toDealNum,playerNum=playerNum,range='100%'),dataList)
 
 def winRateVsRandomHands(playerNum=2,toDealNum=None,totalNum=1000):
     deck=Deck()
