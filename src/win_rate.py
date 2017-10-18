@@ -61,25 +61,28 @@ def caculcateWinRateBy(deck,players,totalNum=2500):
     return winNum
 
 
-def testWinRate(handsList,showCards='',totalNum=2500):
-    assert len(handsList)>=2
+def testWinRate(list,showCards='',totalNum=1000):
+    assert len(list)>=2
     deck=Deck()
     ls=[]
     players=[]
-    for s in handsList:
+    for s in list:
         p1=Player()
         if type(s)==str:            
             p1.hands=Card.arrayFromString(s)
-        elif type(s)==list:
-            p1.hands=s
+        elif type(s)==Player:
+            p1=s
+        else:
+            raise 'Error'
         players.append(p1)
     deck.removeCardsFromPlayers(players)
     sl=Card.arrayFromString(showCards)
     deck.showList.extend(sl)
     deck.removeCards(sl)
     winNum=caculcateWinRateBy(deck,players,totalNum)
-    for player in players:
-        print('%s %.1f'%(str(player.hands[0])+str(player.hands[1]),player.winRate*100)+'%',end='  ')
+    if __name__ == '__main__':
+        for player in players:
+            print('%s %.1f'%(str(player.hands[0])+str(player.hands[1]),player.winRate*100)+'%',end='  ')
     return winNum
 
 

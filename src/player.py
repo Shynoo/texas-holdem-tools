@@ -11,12 +11,15 @@ class Player():
         self.winRate=0
         self.currentMoney=Decimal()
         self.name=''
-
     
     def __str__(self):
         return self.name+" "+str(self.hands[0])+str(self.hands[1])+" money:"+str(self.currentMoney)
 
     def sortHands(self):
-        self.hands.sort(key=lambda card:card.num)
+        self.hands.sort(key=lambda card:card.num,reverse=True)
 
+    def handsString(self):
+        assert len(self.hands)==2
+        self.sortHands()
+        return str(self.hands[0])+str(self.hands[1])
 

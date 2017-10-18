@@ -11,13 +11,3 @@ db=client.poker
 ratedb=db['hole_hands_win_rate']
 
 
-
-
-
-
-rateTemplete={
-    'hands':hands,
-    'vs':vs,
-    'winNum':0,
-    'totalNum':0
-}
