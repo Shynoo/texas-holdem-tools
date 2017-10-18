@@ -8,8 +8,8 @@ import random
 from card import Card
 
 
-def insertDate(dataList):
-    ratedb=mongo.ratedb
+def insertDate(db,dataList):
+    ratedb=db
     for data in dataList:
         r=ratedb.find_one({
             'hands':data['hands']
@@ -23,30 +23,29 @@ def insertDate(dataList):
             ratedb.replace_one({'hands':data['hands']},data,True)
 
 
-def winRateVsRandomHands(totalNum=1000):
+
+def winRateVsRandomHands(playerNum=2,toDealNum=None,totalNum=1000):
     deck=Deck()
     players=[]
-    for index in range(0,10):
+    for index in range(0,playerNum):
         p=Player()
         p.hands.append(deck.dealOne())
         p.hands.append(deck.dealOne())
         players.append(p)
-    ls2=random.sample(players,2)
-    winNum=testWinRate(ls2,totalNum=totalNum)
+    ls2=players
+    winNum=testWinRate(ls2,totalNum=totalNum,toDealNum=toDealNum)
     for index,p in enumerate(ls2):
         print('%s %.1f'%(p.simpleHandsString(),p.winRate*100)+'%',end='  ')
     print()
-    dataList=[{
-        'hands':ls2[0].simpleHandsString(),
-        'winNum':winNum[0],
-        'totalNum':totalNum,
-    },{
-        'hands':ls2[1].simpleHandsString(),
-        'winNum':winNum[1],
-        'totalNum':totalNum
-    }]
+    dataList=[]
+    for index,p in enumerate(players):
+        dataList.append({
+            'hands':ls2[index].simpleHandsString(),
+            'winNum':winNum[index],
+            'totalNum':totalNum,
+        })
 
-    insertDate(dataList)
+    insertDate(mongo.generateDB(toDealNum=toDealNum,playerNum=playerNum,range='100%'),dataList)
 
 def topHandsResult(k=0.25):
     if type(k)==float:
@@ -64,10 +63,11 @@ def topHandsResult(k=0.25):
 def alwaysInsertData():
     while True:
         for i in range(0,1000):
-            winRateVsRandomHands()
+            winRateVsRandomHands(toDealNum=4)
 
 def main():
-    topHandsResult(k=0.5)
+    # topHandsResult(k=0.5)
+    alwaysInsertData()
 
 if __name__ == '__main__':
     main()

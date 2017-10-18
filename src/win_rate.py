@@ -26,14 +26,16 @@ def _generateRandomGroupResult(cardList,totalNum,dealNum):
         res.append(ls)
     return res
 
-def caculcateWinRateBy(deck,players,totalNum=2500):
+def caculcateWinRateBy(deck,players,totalNum=2500,toDealNum=None):
     showList=deck.showList.copy()
     cardList=deck.inDeck.copy()
     winNum=[0 for i in players]
 
     totalResult=[]
 
-    if len(showList)>=3:
+    if toDealNum!=None:
+        totalResult=_generateRandomGroupResult(cardList,totalNum,toDealNum)
+    elif len(showList)>=3:
         totalResult=_generateProbabilityGroupResult(cardList)
     else:
         dealNum=5-len(showList)
@@ -61,7 +63,7 @@ def caculcateWinRateBy(deck,players,totalNum=2500):
     return winNum
 
 
-def testWinRate(list,showCards='',totalNum=1000):
+def testWinRate(list,showCards='',totalNum=1000,toDealNum=None):
     assert len(list)>=2
     deck=Deck()
     ls=[]
@@ -79,12 +81,11 @@ def testWinRate(list,showCards='',totalNum=1000):
     sl=Card.arrayFromString(showCards)
     deck.showList.extend(sl)
     deck.removeCards(sl)
-    winNum=caculcateWinRateBy(deck,players,totalNum)
+    winNum=caculcateWinRateBy(deck,players,totalNum,toDealNum)
     if __name__ == '__main__':
         for player in players:
             print('%s %.1f'%(str(player.hands[0])+str(player.hands[1]),player.winRate*100)+'%',end='  ')
     return winNum
-
 
 
 def main():
