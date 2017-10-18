@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding=utf-8 -*-
 
+from card import Card,SevenCard
 import random
-
-from card import Card
 
 class Deck():
     

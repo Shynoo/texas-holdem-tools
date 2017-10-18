@@ -5,8 +5,6 @@ from deck import Deck
 from card import Card,SevenCard
 from player import Player
 import random
-import cProfile
-
 
 def _generateProbabilityGroupResult(cardList,dealNum=None):
     totalResult=[]
