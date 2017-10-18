@@ -4,10 +4,13 @@
 import threading
 import cProfile
 from bidict import bidict
+import random
+
 class Card():
     
     table2={'2':2,'3':3,'4':4,'5':5,'6':6,'7':7,'8':8,'9':9,'T':10,'J':11,'Q':12,'K':13,'A':14}
     table=bidict(table2)
+    tags={'h','d','c','s'}
 
     def __init__(self,num,tag):
         self.num=num
@@ -32,10 +35,31 @@ class Card():
 
     def arrayFromString(s):
         arr=[]
-        if len(s)%2!=0:
-            raise 'card length Error'
-        for i in range(0,len(s),2):
-            arr.append(Card(Card.table[s[i]],s[i+1]))
+        s=s.strip()
+        
+        if len(s)==2:
+            tagList=random.sample(self.tags,2)
+            for i in [0,1]:
+                arr.append(Card(Card.table[s[i]],tagList[i]))
+            return arr
+
+        if len(s)==3:
+            if s[2]=='s':
+                tagList=random.sample(self.tags,1)
+                for i in [0,1]:
+                    arr.append(Card(Card.table[s[i]],tagList[0]))
+                return arr
+            elif s[2]=='o':
+                tagList=random.sample(self.tags,2)                
+                for i in [0,1]:
+                    arr.append(Card(Card.table[s[i]],tagList[i]))
+                return arr
+            else:
+                raise 'Error'
+        
+        if len(s)==4:
+            for i in [0,2]:
+                arr.append(Card(Card.table[s[i]],s[i+1]))
         return arr
 
 

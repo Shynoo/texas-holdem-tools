@@ -5,6 +5,7 @@ from deck import Deck
 from mongo import mongo
 from player import Player
 import random
+from card import Card
 
 
 def insertDate(dataList):
@@ -47,11 +48,26 @@ def winRateVsRandomHands(totalNum=1000):
 
     insertDate(dataList)
 
+def topHandsResult(k=0.25):
+    if type(k)==float:
+        k=int(169*k)
+    ratedb=mongo.ratedb
+    res=ratedb.find({}).sort([('winRate',-1)])
+    handsResult=set()
+    for i in range(0,k):
+        hands=Card.arrayFromString(res[i]['hands'])
+        handsResult.add(hands)
+        if __name__ == '__main__':
+            print(res[i]['hands'],end=' ')
+    return handsResult
 
-def main():
+def alwaysInsertData():
     while True:
         for i in range(0,1000):
             winRateVsRandomHands()
+
+def main():
+    topHandsResult(k=0.5)
 
 if __name__ == '__main__':
     main()
