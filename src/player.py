@@ -18,6 +18,16 @@ class Player():
     def sortHands(self):
         self.hands.sort(key=lambda card:card.num,reverse=True)
 
+    def simpleHandsString(self):
+        assert len(self.hands)==2
+        self.sortHands()
+        suit='o'
+        if self.hands[0].tag==self.hands[1].tag:
+            suit='s'
+        if self.hands[0].num==self.hands[1].num:
+            suit=''
+        return self.hands[0].symbol+self.hands[1].symbol+suit
+
     def handsString(self):
         assert len(self.hands)==2
         self.sortHands()

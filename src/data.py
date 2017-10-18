@@ -7,8 +7,6 @@ from player import Player
 import random
 
 
-
-
 def insertDate(dataList):
     ratedb=mongo.ratedb
     for data in dataList:
@@ -24,7 +22,7 @@ def insertDate(dataList):
             ratedb.replace_one({'hands':data['hands']},data,True)
 
 
-def winRateVsRandomHands():
+def winRateVsRandomHands(totalNum=1000):
     deck=Deck()
     players=[]
     for index in range(0,10):
@@ -33,22 +31,21 @@ def winRateVsRandomHands():
         p.hands.append(deck.dealOne())
         players.append(p)
     ls2=random.sample(players,2)
-    winNum=testWinRate(ls2,totalNum=100)
+    winNum=testWinRate(ls2,totalNum=totalNum)
     for index,p in enumerate(ls2):
-        print('%s %.1f'%(p.handsString(),p.winRate*100)+'%',end='  ')
+        print('%s %.1f'%(p.simpleHandsString(),p.winRate*100)+'%',end='  ')
     print()
     dataList=[{
-        'hands':ls2[0].handsString(),
+        'hands':ls2[0].simpleHandsString(),
         'winNum':winNum[0],
-        'totalNum':100,
+        'totalNum':totalNum,
     },{
-        'hands':ls2[1].handsString(),
+        'hands':ls2[1].simpleHandsString(),
         'winNum':winNum[1],
-        'totalNum':100
+        'totalNum':totalNum
     }]
 
     insertDate(dataList)
-
 
 
 def main():
