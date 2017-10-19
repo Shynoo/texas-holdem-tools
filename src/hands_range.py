@@ -119,20 +119,20 @@ def expandRangeToReal(handsList):
             raise 'Error'
     return result
 
-def reduceHands():
-    dbfrom=mongo.generateDB(player=9,rangee='100%')
+def reduceHands(rangee='165',length=160):
+    dbfrom=mongo.generateDB(playerNum=2,rangee=rangee)
     res=mongo.getSortedData(dbfrom,'winRate',-1)
     result=[]
     for data in res:
         result.append(data['hands'])
     if __name__ == '__main__':
-        print(result[0:165])
-    return result[0:165]
+        print(result[0:length])
+    return result[0:length]
 
 def main():
     # updateHandsRank()
     # print(getRangeHands(30))
-    reduceHands()
+    reduceHands(rangee='165',length=160)
 
 
 if __name__ == '__main__':
@@ -144,4 +144,4 @@ r165=['AA', 'KK', 'QQ', 'JJ', 'TT', '99', '88', 'AKs', 'AQs', '77', 'AJs', 'AKo'
 , '74s', 'T3o', '92s', '76o', '64s', '54s', 'T2o', '85o', '83s', '75o', '65o', '94o', '53s', '73s', '82s', '93o', '84o', '63s', '92o', '43s', '74o', '52s', '54o', '72s', '64o', '62s', '83o', '82o', '73o', '42s', '53o', '63o'
 , '32s', '43o', '72o']
 
-
+r160=['AA', 'KK', 'QQ', 'JJ', 'TT', '99', 'ATs', 'AKs', '88', 'AKo', 'AQs', 'AJs', 'AQo', 'KQs', '77', 'A8s', 'KJs', 'ATo', 'QJs', '66', 'AJo', 'A9s', 'KQo', 'JTs', 'A9o', '55', 'KTs', 'K8s', 'A6s', 'KJo', 'A2s', 'QTs', 'A7s', 'A5s', 'KTo', 'A8o', 'K7s', 'A7o', 'K9o', 'Q8s', 'A5o', 'K6s', 'Q9s', 'QTo', 'QJo', 'A6o', 'A4s', 'A4o', 'K8o', 'K3s', 'A3s', 'K2s', 'K4s', 'K7o', '44', 'K9s', 'Q9o', 'A2o', 'Q6s', 'A3o', 'K6o', 'T9s', 'K5o', 'J9s', 'K5s', 'Q8o', 'J9o', 'J8s', 'Q3s', 'Q5s', 'K3o', 'K4o', 'Q7s', 'Q4s', 'J6s', 'JTo', 'J4s', 'Q7o', 'K2o', 'J8o', 'J5s', 'Q5o', '33', 'T9o', '22', 'T7s', 'Q6o', 'Q3o', 'Q2s', 'J3s', '98o', 'T8s', '97s', 'T8o', 'J7o', 'Q4o', 'T6s', 'J7s', 'J2o', 'J5o', 'J3o', 'J4o', 'Q2o', '98s', 'T5s', '86s', '97o', 'T4s', 'J6o', 'T6o', '76s', 'J2s', '85s', '93s', 'T7o', '87s', '96s', '83s', '94s', '95o', '84s', '87o', 'T5o', '76o', '95s', '64s', 'T2s', '75s', '65s', 'T4o', '96o', 'T3s', '86o', '82s', '73s', '94o', '63s', '85o', '92s', '75o', '53s', '84o', 'T3o', '74s', '93o', '54s', 'T2o', '62s', '74o', '65o', '83o', '52s', '72s', '54o', '92o', '43s', '64o', '42s', '63o', '73o']

@@ -112,7 +112,7 @@ def insertDataByRange(handsRange):
 
 def main():
     # topHandsResult(k=0.5)
-    handsWinNumForRange(hands_range.r165)
+    handsWinNumForRange(hands_range.r160)
     # cProfile.run('handsWinNumForRange(hands_range.r165)')
 
 if __name__ == '__main__':
