@@ -2,12 +2,13 @@
 # -*- coding=utf-8 -*-
 
 from bidict import bidict
+import random
 
 class Card():
     
     table2={'2':2,'3':3,'4':4,'5':5,'6':6,'7':7,'8':8,'9':9,'T':10,'J':11,'Q':12,'K':13,'A':14}
     table=bidict(table2)
-    tags={'h','d','c','s'}
+    tags=['h','d','c','s']
 
     def __init__(self,num,tag):
         self.num=num
@@ -23,6 +24,9 @@ class Card():
     def __str__(self):
         return str(self.symbol)+self.tag
 
+    def __repr__(self):
+        return str(self.symbol)+self.tag
+
     def __eq__(self,that):
         if type(that)!=Card:
             return False
@@ -35,19 +39,19 @@ class Card():
         s=s.strip()
         
         if len(s)==2:
-            tagList=random.sample(self.tags,2)
+            tagList=random.sample(Card.tags,2)
             for i in [0,1]:
                 arr.append(Card(Card.table[s[i]],tagList[i]))
             return arr
 
         if len(s)==3:
             if s[2]=='s':
-                tagList=random.sample(self.tags,1)
+                tagList=random.sample(Card.tags,1)
                 for i in [0,1]:
                     arr.append(Card(Card.table[s[i]],tagList[0]))
                 return arr
             elif s[2]=='o':
-                tagList=random.sample(self.tags,2)                
+                tagList=random.sample(Card.tags,2)                
                 for i in [0,1]:
                     arr.append(Card(Card.table[s[i]],tagList[i]))
                 return arr
@@ -63,11 +67,34 @@ class Card():
 class HandsCard():
     
     def __init__(self):
-        self.arr=[]
+        self.hands=[]
 
     def fromString(s):
         handsCard=HandsCard()
+        handsCard.hands=Card.arrayFromString(s)
         return handsCard
+
+    def __str__(self):
+        return str(self.hands[0])+str(self.hands[1])
+
+    def __repr__(self):
+        return str(self.hands[0])+str(self.hands[1])
+    
+    def __getitem__(self,position):
+        return self.hands[position]
+
+    def sort(self):
+        self.hands.sort(key=lambda card:card.num,reverse=True)
+
+    def simpleString(self):
+        assert len(self.hands)==2
+        self.sort()
+        suit='o'
+        if self.hands[0].tag==self.hands[1].tag:
+            suit='s'
+        if self.hands[0].num==self.hands[1].num:
+            suit=''
+        return self.hands[0].symbol+self.hands[1].symbol+suit
 
 class SevenCard():
 
@@ -78,6 +105,7 @@ class SevenCard():
         self.maxValue=0
         self.value=0
         self.levelText=self.levelTable[1]
+        self.handsList=[]
 
     def getCardLevelText(self):
         assert self.value>0
@@ -100,9 +128,9 @@ class SevenCard():
         
         return res
 
-    def fromCardArray(arr,hands=[]):
-        ls=arr.copy()
-        ls.extend(hands)
+    def fromHands(hands,showList=[]):
+        ls=hands.hands.copy()
+        ls.extend(showList)
         assert len(ls)>=5 and len(ls)<=7
         res=SevenCard()
         res.arr=ls
@@ -276,6 +304,7 @@ class SevenCard():
     def caculateAll(self):
         self.value=self._resolveMaxValue()
         self.levelText=self.getCardLevelText()
+        return self
 
 def testAllLevelCards():
     from deck import Deck
@@ -287,7 +316,7 @@ def testAllLevelCards():
         cards=[]
         for i in range(0,7):
             cards.append(deck.dealOne())
-        seven=SevenCard.fromCardArray(cards)
+        seven=SevenCard.fromHands(cards)
         seven.caculateAll()
         if seven.cardLevel in levelSet:
             fs.append(seven)
@@ -299,7 +328,7 @@ def testAllLevelCards():
 
 
 def main():
-    testAllLevelCards()
+    print(HandsCard.fromString('AA')[0])
 
 if __name__ == '__main__':
     main()

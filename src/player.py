@@ -14,7 +14,10 @@ class Player():
     
     def __str__(self):
         return self.name+" "+str(self.hands[0])+str(self.hands[1])+" money:"+str(self.currentMoney)
-
+    
+    def __repr__(self):
+        return self.name+" "+str(self.hands[0])+str(self.hands[1])+" money:"+str(self.currentMoney)
+    
     def sortHands(self):
         self.hands.sort(key=lambda card:card.num,reverse=True)
 

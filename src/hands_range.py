@@ -1,6 +1,7 @@
 # -*- coding=utf-8 -*-
 
 from mongo import mongo
+from card import Card
 
 pair={'AA':0.5,'KK':0.9,'QQ':1.7,'JJ':3.0,'TT':3.8,'99':5.1,'88':5.9,'77':7.5,'66':8.0,'55':9.7,'44':10.7,'33':14.5,'22':22.5}
 
@@ -79,6 +80,44 @@ def getRangeHands(r=50):
 
     return result
 
+
+def expandPair(s):
+    result=[]
+    s1=s[0]
+    tags=Card.tags
+    for c1 in range(0,3):
+        for c2 in range(c1+1,4):
+            result.append(s1+tags[c1]+s1+tags[c2])
+    return result
+
+def expandSuited(s):
+    result=[]
+    tags=Card.tags
+    for c1 in range(0,4):
+        result.append(s[0]+tags[c1]+s[1]+tags[c1])
+    return result
+
+def expandOffsuit(s):
+    result=[]
+    tags=Card.tags
+    for c1 in range(0,4):
+        for c2 in range(0,4):
+            if c1!=c2:
+                result.append(s[0]+tags[c1]+s[1]+tags[c2])
+    return result
+
+def expandRangeToReal(handsList):
+    result=[]
+    for s in handsList:
+        if len(s)==2:
+            result.extend(expandPair(s))
+        elif s.endswith('s'):
+            result.extend(expandSuited(s))
+        elif s.endswith('o'):
+            result.extend(expandOffsuit(s))
+        else:
+            raise 'Error'
+    return result
 
 def reduceHands():
     dbfrom=mongo.generateDB(player=9,rangee='100%')

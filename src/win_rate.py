@@ -52,7 +52,7 @@ def caculcateWinRateBy(deck,players,totalNum=2500,toDealNum=None):
         cards.extend(showList)
         pv=[0 for i in players]
         for index,player in enumerate(players):
-            temp=SevenCard.fromCardArray(cards,player.hands)
+            temp=SevenCard.fromHands(cards,player.hands)
             temp.caculateAll()
             if temp.value>pv[index]:
                 pv[index] = temp.value

@@ -13,8 +13,8 @@ ratedb=db['hole_hands_win_rate']
 
 dbnameTemplete='card%d_player%d_with_%s_range'
 
-def generateDB(toDealNum=5,player=2,rangee='100%'):
-    name=dbnameTemplete%(toDealNum,player,rangee)
+def generateDB(toDealNum=5,playerNum=2,rangee='100%'):
+    name=dbnameTemplete%(toDealNum,playerNum,rangee)
     return db[name]
 
 def getSortedData(db,key='winRate',des=-1):
