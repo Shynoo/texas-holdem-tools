@@ -71,16 +71,27 @@ def handsWinNumForRange(handsRange,totalNum=1000,toDealNum=5):
     print('insert data begin')
     insertDate(mongo.generateDB(toDealNum=toDealNum,playerNum=2,rangee=len(handsRange)),dataList)
 
+def autoReduceRange(cur=165,limit=10**7,target=50):
+    while True:
+        db=mongo.generateDB(rangee=str(cur))
+        r=db.find_one({'hands':'AA'})
+        if r['totalNum']>=limit:
+            cur-=5
+        ls2=hands_range.reduceHands(cur)
+        handsWinNumForRange(ls2)
+
+
 def handsWinNumForRange(handsRange,totalNum=1000,toDealNum=5):
     realRange=hands_range.expandRangeToReal(handsRange)
-    while True:
+    print(len(handsRange))
+    for i in range(0,totalNum):
         dataList=[]
         hands1=HandsCard.fromString(random.choice(realRange))
         hands2=HandsCard.fromString(random.choice(realRange))
         if hands2[0] in hands1 or hands2[1] in hands1:
             continue
         handsList=[hands1,hands2]
-        print(hands1,hands2)
+        # print(len(handsRange),hands1,hands2)
         deck=Deck.fromHandsList(handsList)
         winNum=deck.generateWinNum(totalNum=totalNum,toDealNum=5)
         for index,p in enumerate(handsList):
@@ -112,7 +123,7 @@ def insertDataByRange(handsRange):
 
 def main():
     # topHandsResult(k=0.5)
-    handsWinNumForRange(hands_range.r160)
+    autoReduceRange()    
     # cProfile.run('handsWinNumForRange(hands_range.r165)')
 
 if __name__ == '__main__':
