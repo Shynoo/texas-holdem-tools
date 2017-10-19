@@ -60,6 +60,15 @@ class Card():
         return arr
 
 
+class HandsCard():
+    
+    def __init__(self):
+        self.arr=[]
+
+    def fromString(s):
+        handsCard=HandsCard()
+        return handsCard
+
 class SevenCard():
 
     levelTable={1:'高牌',2:'一对',3:'两对',4:'三条',5:'顺子',6:'同花',7:'葫芦',8:'四条',9:'同花顺'}

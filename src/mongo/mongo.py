@@ -17,7 +17,10 @@ def generateDB(toDealNum=5,player=2,rangee='100%'):
     name=dbnameTemplete%(toDealNum,player,rangee)
     return db[name]
 
+def getSortedData(db,key='winRate',des=-1):
+    res=db.find({}).sort([(key,des)])
+    return res
+
 c5t9r100db=db['card5_player9_with_100%_range']
-c5t9r50db=db['card5_player9_with_50%_range']
 c3t9r100db=db['card3_player9_with_100%_range']
 c4t9r100db=db['card4_player9_with_100%_range']
