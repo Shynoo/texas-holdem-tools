@@ -7,6 +7,8 @@ from player import Player
 import random
 from card import Card,SevenCard,HandsCard
 import hands_range
+import cProfile
+
 
 def insertDate(db,dataList):
     ratedb=db
@@ -15,6 +17,7 @@ def insertDate(db,dataList):
             'hands':data['hands']
         })
         if not r:
+            data['winRate']=data['winNum']/data['totalNum']
             ratedb.insert_one(data)
         else:
             data['winNum']+=r['winNum']
@@ -89,7 +92,8 @@ def insertDataByRange(handsRange):
 
 def main():
     # topHandsResult(k=0.5)
-    insertDataByRange(hands_range.r165)
+    # insertDataByRange(hands_range.r165)
+    cProfile.run('handsWinNumForRange(hands_range.r165)')
 
 if __name__ == '__main__':
     main()
