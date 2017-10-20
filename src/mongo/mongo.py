@@ -19,4 +19,3 @@ def getSortedData(db,key='winRate',des=-1):
     return res
 
 c5p2r169db=db['card5_player2_with_169_range']
-]
