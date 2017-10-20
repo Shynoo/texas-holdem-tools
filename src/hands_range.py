@@ -47,8 +47,7 @@ allHands=[pair,Axs,Axo,Kxs,Kxo,Qxs,Qxo,Jxs,Jxo,Txs,Txo,x9s,x9o,x8s,x8o,x7s,x7o,x
 
 
 
-
-def updateHandsRank(db=mongo.c5t9r100db,allHands=allHands):
+def updateHandsRank(db=mongo.c5p2r169db,allHands=allHands):
     for type in allHands:
         for key in type:
             data=db.find_one(
@@ -70,18 +69,13 @@ def updateHandsRank(db=mongo.c5t9r100db,allHands=allHands):
         )
 
 
-def getRangeHands(r=50):
-    db=mongo.c5t9r100db
-    res=db.find({}).sort([('percent',1)])
-    result=[]
-    for data in res:
-        if data['percent']<=r:
-            result.append(data['hands'])
-
-    return result
+def getRangeHands(l=160):
+    db=mongo.generateDB(rangee=str(l))
+    res=db.find({}).sort([('winRate',-1)])
+    return res
 
 
-def expandPair(s):
+def _expandPair(s):
     result=[]
     s1=s[0]
     tags=Card.tags
@@ -90,14 +84,14 @@ def expandPair(s):
             result.append(s1+tags[c1]+s1+tags[c2])
     return result
 
-def expandSuited(s):
+def _expandSuited(s):
     result=[]
     tags=Card.tags
     for c1 in range(0,4):
         result.append(s[0]+tags[c1]+s[1]+tags[c1])
     return result
 
-def expandOffsuit(s):
+def _expandOffsuit(s):
     result=[]
     tags=Card.tags
     for c1 in range(0,4):
@@ -110,18 +104,18 @@ def expandRangeToReal(handsList):
     result=[]
     for s in handsList:
         if len(s)==2:
-            result.extend(expandPair(s))
+            result.extend(_expandPair(s))
         elif s.endswith('s'):
-            result.extend(expandSuited(s))
+            result.extend(_expandSuited(s))
         elif s.endswith('o'):
-            result.extend(expandOffsuit(s))
+            result.extend(_expandOffsuit(s))
         else:
             raise 'Error'
     return result
 
-def reduceHands(rangee=165):
-    length=rangee-5
-    dbfrom=mongo.generateDB(playerNum=2,rangee=str(rangee))
+def reduceHands(fromRange=165,step=5):
+    length=fromRange-step
+    dbfrom=mongo.generateDB(playerNum=2,rangee=str(fromRange))
     res=mongo.getSortedData(dbfrom,'winRate',-1)
     result=[]
     for data in res:
@@ -131,18 +125,9 @@ def reduceHands(rangee=165):
     return result[0:length]
 
 def main():
-    # updateHandsRank()
     # print(getRangeHands(30))
-    reduceHands(rangee=165)
+    reduceHands(fromRange=165)
 
 
 if __name__ == '__main__':
     main()
-
-
-r165=['AA', 'KK', 'QQ', 'JJ', 'TT', '99', '88', 'AKs', 'AQs', '77', 'AJs', 'AKo', 'ATs', 'AQo', 'AJo', 'KQs', 'A9s', 'ATo', 'KJs', '66', 'A8s', 'KTs', 'A7s', 'KQo', 'A9o', 'A5s', 'KJo', 'A6s', 'K9s', 'QJs', 'A8o', 'KTo', '55', 'QTs', 'A7o', 'A4s', 'A3s', 'K8s', 'A5o', 'A6o', 'K9o', 'QJo', 'K7s', 'Q9s', 'A4o', 'JTs', 'A2s', 'K6s', 'QTo', 'K5s', '44', 'A3o', 'Q8s', 'K8o', 'K4s', 'J9s', 'Q9o', 'A2o', 'K7o', 'JTo', 'T9s', 'K3s', 'K6o', 'J8s', 'Q7s', 'Q6s', 'K5o', 'Q8o', 'K2s', 'J9o', '33', 'K4o', 'Q5s', 'J7s', 'T8s', 'Q4s', 'Q7o', 'K3o', '98s', 'T9o', 'J8o', 'Q3s', 'K2o', 'T7s', 'J6s', 'Q6o', 'J5s', 'Q5o', 'Q2s', 'T8o', '97s', 'J7o', 'Q4o', '22', 'T6s', 'J4s', 'Q3o', '87s'
-, '98o', 'J3s', 'T7o', 'J6o', 'Q2o', 'J5o', '96s', 'T5s', 'J2s', '86s', '97o', 'T3s', 'T4s', 'J4o', 'T6o', '95s', 'J3o', '76s', 'T2s', '87o', 'J2o', '96o', 'T5o', '85s', 'T4o', '75s', '94s', '65s', '93s', '86o', '84s', '95o'
-, '74s', 'T3o', '92s', '76o', '64s', '54s', 'T2o', '85o', '83s', '75o', '65o', '94o', '53s', '73s', '82s', '93o', '84o', '63s', '92o', '43s', '74o', '52s', '54o', '72s', '64o', '62s', '83o', '82o', '73o', '42s', '53o', '63o'
-, '32s', '43o', '72o']
-
-r160=['AA', 'KK', 'QQ', 'JJ', 'TT', '99', 'ATs', 'AKs', '88', 'AKo', 'AQs', 'AJs', 'AQo', 'KQs', '77', 'A8s', 'KJs', 'ATo', 'QJs', '66', 'AJo', 'A9s', 'KQo', 'JTs', 'A9o', '55', 'KTs', 'K8s', 'A6s', 'KJo', 'A2s', 'QTs', 'A7s', 'A5s', 'KTo', 'A8o', 'K7s', 'A7o', 'K9o', 'Q8s', 'A5o', 'K6s', 'Q9s', 'QTo', 'QJo', 'A6o', 'A4s', 'A4o', 'K8o', 'K3s', 'A3s', 'K2s', 'K4s', 'K7o', '44', 'K9s', 'Q9o', 'A2o', 'Q6s', 'A3o', 'K6o', 'T9s', 'K5o', 'J9s', 'K5s', 'Q8o', 'J9o', 'J8s', 'Q3s', 'Q5s', 'K3o', 'K4o', 'Q7s', 'Q4s', 'J6s', 'JTo', 'J4s', 'Q7o', 'K2o', 'J8o', 'J5s', 'Q5o', '33', 'T9o', '22', 'T7s', 'Q6o', 'Q3o', 'Q2s', 'J3s', '98o', 'T8s', '97s', 'T8o', 'J7o', 'Q4o', 'T6s', 'J7s', 'J2o', 'J5o', 'J3o', 'J4o', 'Q2o', '98s', 'T5s', '86s', '97o', 'T4s', 'J6o', 'T6o', '76s', 'J2s', '85s', '93s', 'T7o', '87s', '96s', '83s', '94s', '95o', '84s', '87o', 'T5o', '76o', '95s', '64s', 'T2s', '75s', '65s', 'T4o', '96o', 'T3s', '86o', '82s', '73s', '94o', '63s', '85o', '92s', '75o', '53s', '84o', 'T3o', '74s', '93o', '54s', 'T2o', '62s', '74o', '65o', '83o', '52s', '72s', '54o', '92o', '43s', '64o', '42s', '63o', '73o']
