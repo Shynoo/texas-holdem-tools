@@ -68,6 +68,7 @@ class HandsCard():
     
     def __init__(self):
         self.hands=[]
+        self.value=0
 
     def fromString(s):
         handsCard=HandsCard()
@@ -105,11 +106,12 @@ class SevenCard():
         self.maxValue=0
         self.value=0
         self.levelText=self.levelTable[1]
+        self.lavel=0
         self.handsList=[]
 
     def getCardLevelText(self):
         assert self.value>0
-        self.cardLevel=int(str(self.value)[0])
+        self.level=int(str(self.value)[0])
         self.levelText=self.levelTable[self.cardLevel]
         return self.levelText
 
